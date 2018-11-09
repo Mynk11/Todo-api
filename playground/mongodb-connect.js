@@ -1,6 +1,7 @@
 //const MongoClient = require('mongodb').MongoClient;
 const { MongoClient, ObjectID } = require('mongodb')
-
+//C:\Program Files\MongoDB\Server\4.0\bin>mongod.exe --dbpath /Users/Mayank/mongo-data
+//C:\Program Files\MongoDB\Server\4.0\bin>mongo.exe
 var idn = new ObjectID();
 console.log(idn);
 var user = { name: "mayank", age: 25 };

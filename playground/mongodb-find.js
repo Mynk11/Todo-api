@@ -37,13 +37,13 @@ MongoClient.connect("mongodb://localhost:27017/TodoApp", (err, db) => {
  
     }) */
     //find() returns cursor(pointer to docs)
-    db.collection('Users').find({ name: "neha" }).toArray().then((data) => {
+    db.collection('Todos').find({ name: "Mayank" }).toArray().then((data) => {
         console.log(JSON.stringify(data, undefined, 3));
     }).catch((err) => {
         console.log("Error from catch block:", err);
 
     });
-    db.collection('Users').find({
+    /* db.collection('Users').find({
         _id: new ObjectID('5be5bfb14cc2d71df0d9a712')
     }).toArray().then((data) => {
         console.log(JSON.stringify(data, undefined, 3));
@@ -56,6 +56,6 @@ MongoClient.connect("mongodb://localhost:27017/TodoApp", (err, db) => {
     }).catch((err) => {
         console.log("Error from catch block:", err);
 
-    });
+    }); */
     db.close();
 });
