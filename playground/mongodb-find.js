@@ -37,7 +37,7 @@ MongoClient.connect("mongodb://localhost:27017/TodoApp", (err, db) => {
  
     }) */
     //find() returns cursor(pointer to docs)
-    db.collection('Users').find({ location: "venice" }).toArray().then((data) => {
+    db.collection('Users').find({ name: "neha" }).toArray().then((data) => {
         console.log(JSON.stringify(data, undefined, 3));
     }).catch((err) => {
         console.log("Error from catch block:", err);
