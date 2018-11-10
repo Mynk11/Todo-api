@@ -1,10 +1,18 @@
 //const MongoClient = require('mongodb').MongoClient;
-const { MongoClient, ObjectID } = require('mongodb')
+const {
+    MongoClient,
+    ObjectID
+} = require('mongodb')
 
 var idn = new ObjectID();
 console.log(idn);
-var user = { name: "mayank", age: 25 };
-var { name } = user;//object destruction
+var user = {
+    name: "mayank",
+    age: 25
+};
+var {
+    name
+} = user; //object destruction
 console.log("Name is", name)
 MongoClient.connect("mongodb://localhost:27017/TodoApp", (err, db) => {
     if (err) {
@@ -13,7 +21,7 @@ MongoClient.connect("mongodb://localhost:27017/TodoApp", (err, db) => {
     console.log("MongoDB is connected");
     //from windows command prompt 1:mongod.exe --dbpath /Users/Mayank/mongo-data
     //from command prompt 2:mongo.exe(from program files/mongodb/server/4.0/bin)
-    db.collection('Todos').insertOne({
+    /* db.collection('Todos').insertOne({
 
         name: "Mayank",
         lastname: "Gupta"
@@ -23,7 +31,8 @@ MongoClient.connect("mongodb://localhost:27017/TodoApp", (err, db) => {
             return console.log("Error insertion failed 1", err)
         }
         console.log(JSON.stringify(result.ops, undefined, 2));
-    })//ops is refernce for inserted docs
+    }) */
+    //ops is refernce for inserted docs
 
     /* db.collection('Users').insertOne({
         name: "shivi",
@@ -37,8 +46,10 @@ MongoClient.connect("mongodb://localhost:27017/TodoApp", (err, db) => {
  
     }) */
     //find() returns cursor(pointer to docs)
-    db.collection('Todos').find({ name: "Mayank" }).toArray().then((data) => {
-        console.log(JSON.stringify(data, undefined, 3));
+    db.collection('todos').find({
+        text: "Mayank"
+    }).toArray().then((data) => {
+        console.log("Running", JSON.stringify(data, undefined, 3));
     }).catch((err) => {
         console.log("Error from catch block:", err);
 
