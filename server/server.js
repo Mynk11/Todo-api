@@ -4,20 +4,20 @@ var bodyParser = require('body-parser');
 var app = express();
 
 
-var {
+const {
     Todo
 } = require('./model/todo');
-var {
+const {
     User
 } = require('./model/user');
 
-var {
+const {
     mongoose
 } = require('./db/mongoose');
 
 app.use(bodyParser.json());
 app.post('/todos', (req, res) => {
-    console.log(req.body);
+    console.log("req.body.text :", req.body.text);
 
     var todo = new Todo({
         text: req.body.text
@@ -29,6 +29,31 @@ app.post('/todos', (req, res) => {
 
     })
 
+    Todo.find({
+        text: "Marry no way simply"
+    }).then((todos) => {
+        // console.log("data is :", todos[0].text);
+
+    }).catch((e) => {
+        console.log("This error is from catch block", e);
+    });
+
+
+
+
+
+});
+
+
+app.get('/todos', (req, res) => {
+
+    Todo.find().then((data) => {
+        res.status(200).send({
+            data
+        });
+    }, (e) => {
+        res.status(400).send(e);
+    })
 });
 
 
@@ -37,13 +62,9 @@ app.listen(3000, () => {
 })
 
 
-
-
-
-
-
-
-
+module.exports = {
+    app
+}
 
 
 

@@ -46,9 +46,7 @@ MongoClient.connect("mongodb://localhost:27017/TodoApp", (err, db) => {
  
     }) */
     //find() returns cursor(pointer to docs)
-    db.collection('todos').find({
-        text: "Mayank"
-    }).toArray().then((data) => {
+    db.collection('todos').find().toArray().then((data) => {
         console.log("Running", JSON.stringify(data, undefined, 3));
     }).catch((err) => {
         console.log("Error from catch block:", err);
