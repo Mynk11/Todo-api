@@ -65,7 +65,7 @@ app.get('/todos/:id', (req, res) => {
     var id = req.params.id;
     if (ObjectID.isValid(id)) {
         res.status(200);
-        User.findById(id).then((user) => {
+        Todo.findById(id).then((user) => {
             if (!user) {
                 return res.status(404).send("ID Doesn't match")
             }

@@ -16,11 +16,15 @@ const {
     User
 } = require('./../server/model/user');
 
+//var id = "5be7d416c124f91cd00311cc";
 var todo = [{
+    _id: new ObjectID(),
     text: "first"
 }, {
+    _id: new ObjectID(),
     text: "second"
 }, {
+    _id: new ObjectID(),
     text: "third"
 }]
 beforeEach((done) => {
@@ -145,3 +149,109 @@ describe("#GET /Todos", () => {
 
     });
 });
+
+describe("#GET /USer/:id", () => {
+    it("Should get user with valid id", (done) => {
+        request(app)
+            .get(`/todos/${todo[0]._id.toHexString()}`)
+            .expect(200)
+
+            .expect((res) => {
+                console.log("Response is :", res.body.text);
+                console.log(`res.body.user.length`, Object.keys(res.body).length);
+                expect(Object.keys(res.body).length).toBe(4);
+            }).end((err, res) => {
+                if (err) {
+                    return console.log("Error from test 4", err);
+                }
+                // console.log("Running Successfully", res.text);
+
+            });
+
+
+        Todo.findById(todo[0]._id).then((user) => {
+            console.log("length :", user.id, Object.keys(user).length);
+            //  expect(user.length).toBeMoreThan(1).toBeA('number');
+            done();
+        }).catch((e) => {
+            console.log("Error is from catch block", e);
+            done();
+        });
+
+
+
+    });
+    describe("#GET /USer/:invalidid", () => {
+        it(" Invalid id", (done) => {
+            var id = "5be7d416c124f91cd00311cc";
+            request(app)
+                .get(`/todos/${id.toString()}`)
+                .expect(404)
+
+                .expect((res) => {
+                    console.log("Response is :", res.body);
+
+                }).end((err, res) => {
+                    if (err) {
+                        return console.log("Error from test 4", err);
+                    }
+                    // console.log("Running Successfully", res.text);
+
+                });
+
+
+            Todo.findById(id).then((user) => {
+                //console.log("length :", Object.keys(user).length);
+                // expect(Object.keys(user).length).toBe(null);
+
+                if (!user) {
+                    done();
+                    return console.log("Test cases pass");
+
+                }
+
+
+            }).catch((e) => {
+                console.log("Error is from catch block", e);
+                done();
+            });
+
+
+
+        });
+
+
+
+
+
+    });
+
+
+
+
+});
+
+describe('#Empty_ID', () => {
+    it(" #Empty_id_404", (done) => {
+        var id = "adc";
+        request(app)
+            .get(`/todos/${id.toString()}`)
+            .expect(404)
+
+            .expect((res) => {
+                console.log("Response is from empty id :", res.status);
+
+                expect(res.status).toBe(404);
+                done();
+            }).end((err, res) => {
+                if (err) {
+                    done();
+                    return console.log("Error from test 4 empty id :", err);
+
+                }
+                // console.log("Running Successfully", res.text);
+
+            });
+
+    });
+})
