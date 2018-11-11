@@ -5,7 +5,7 @@ const {
 } = require('mongodb');
 var app = express();
 
-const port = process.env.PORT || 3000;
+var port = process.env.PORT || 3000;
 
 
 const {
