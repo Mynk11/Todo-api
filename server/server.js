@@ -5,6 +5,8 @@ const {
 } = require('mongodb');
 var app = express();
 
+const port = process.env.PORT || 3000;
+
 
 const {
     Todo
@@ -80,10 +82,11 @@ app.get('/todos/:id', (req, res) => {
 
 });
 
-app.listen(3000, () => {
-    console.log("Server is set up at 3000");
+app.listen(port, () => {
+    console.log(`Server is set up at ${port}`);
 })
 
+//mongodb://todoapp:mayank11@ds159273.mlab.com:59273/todoapp
 
 module.exports = {
     app

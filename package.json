@@ -4,10 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server/server.js",
     "test": "mocha \"./{,!(node_modules)/**/}*.test.js\"",
     "test-watch": "nodemon --exec \"npm test\""
   },
-  "author": "",
+  "engines": {
+    "node": "8.12.0"
+  },
+  "author": "Mayank",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.2",
