@@ -1,6 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-
+const {
+    ObjectID
+} = require('mongodb');
 var app = express();
 
 
@@ -56,6 +58,27 @@ app.get('/todos', (req, res) => {
     })
 });
 
+
+
+app.get('/todos/:id', (req, res) => {
+
+    var id = req.params.id;
+    if (ObjectID.isValid(id)) {
+        res.status(200);
+        User.findById(id).then((user) => {
+            if (!user) {
+                return res.status(404).send("ID Doesn't match")
+            }
+            res.send(user);
+        }).catch((e) => {
+            res.send("ID not found", e);
+        })
+    } else {
+        return res.status(404).send("Error not Found");
+    }
+
+
+});
 
 app.listen(3000, () => {
     console.log("Server is set up at 3000");
