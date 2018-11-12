@@ -11,6 +11,7 @@ var port = process.env.PORT || 3000;
 const {
     Todo
 } = require('./model/todo');
+
 const {
     User
 } = require('./model/user');
@@ -24,14 +25,27 @@ app.post('/todos', (req, res) => {
     console.log("req.body.text :", req.body.text);
 
     var todo = new Todo({
-        text: req.body.text
+        name: "mayank",
+        completed: "Acceltree",
+        completedAt: "2018"
     })
+    var user = new User({
+        email: "mynkgpt.11@gmail.com"
+    })
+
+    user.save().then((D) => {
+        console.log("Saved Succesfully")
+    }).catch((e) => {
+        console.log(" not saved");
+
+    });
+
     todo.save().then((D) => {
         res.status(200).send(JSON.stringify(D, undefined, 2));
     }).catch((e) => {
         res.status(400).send(e);
 
-    })
+    });
 
     Todo.find({
         text: "Marry no way simply"
@@ -49,6 +63,18 @@ app.post('/todos', (req, res) => {
 });
 
 app.get('/', (req, res) => {
+    var todo = new Todo({
+        name: "synopsis",
+        completed: "Acceltree",
+        completedAt: "2018"
+    });
+
+    todo.save().then((D) => {
+        res.status(200).send(JSON.stringify(D, undefined, 2));
+    }).catch((e) => {
+        res.status(400).send(e);
+
+    });
 
     Todo.find().then((data) => {
         res.status(200).send({
