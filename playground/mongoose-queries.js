@@ -30,7 +30,7 @@ if (ObjectID.isValid(id)) {
     console.log("Id is not valid");
 }
 
-Todo.find({
+/* Todo.find({
     _id: id1
 }).then((todos) => {
     console.log("todos", todos)
@@ -57,4 +57,12 @@ Todo.findById(id1).then((todo) => {
     console.log("todo is ", todo);
 }).catch((e) => {
     console.log("E 1 is :", e);
-});
+}); */
+
+Todo.findByIdAndRemove({
+    _id: "5beda625cdfeb3d320c6f059"
+}).then((t) => {
+    console.log("Deleted", t);
+}).catch((e) => {
+    console.log("error generated ", e)
+})

@@ -1,4 +1,7 @@
+var config = require('./config/config')
+
 var express = require('express');
+var _ = require('lodash');
 var bodyParser = require('body-parser');
 const {
     ObjectID
@@ -56,10 +59,6 @@ app.post('/todos', (req, res) => {
         console.log("This error is from catch block", e);
     });
 
-
-
-
-
 });
 
 app.get('/', (req, res) => {
@@ -85,9 +84,6 @@ app.get('/', (req, res) => {
     })
 });
 
-
-
-
 app.get('/todos', (req, res) => {
 
     Todo.find().then((data) => {
@@ -96,10 +92,10 @@ app.get('/todos', (req, res) => {
         });
     }, (e) => {
         res.status(400).send(e);
+    }).catch((e) => {
+        res.status(400).send(e);
     })
 });
-
-
 
 app.get('/todos/:id', (req, res) => {
 
@@ -110,9 +106,9 @@ app.get('/todos/:id', (req, res) => {
             if (!user) {
                 return res.status(404).send("ID Doesn't match")
             }
-            res.send(user);
+            res.status(200).send(user);
         }).catch((e) => {
-            res.send("ID not found", e);
+            res.status(404).send("ID not found");
         })
     } else {
         return res.status(404).send("Error not Found");
@@ -120,7 +116,64 @@ app.get('/todos/:id', (req, res) => {
 
 
 });
+app.delete('/todos/:id', (req, res) => {
 
+    var id = req.params.id;
+    console.log("Deleted is called on id: from delete", id);
+    if (ObjectID.isValid(id)) {
+
+        Todo.findByIdAndRemove(id).then((user) => {
+            if (!user) {
+                res.status(404).send("ID Doesn't match")
+            } else {
+                res.staus(200).send("user is deleted");
+            }
+        }).catch((e) => {
+            res.status(404).send(e);
+        })
+    } else {
+        return res.status(404).send("Input Id is invalid!!");
+    }
+
+
+});
+app.patch('/todos/:id', (req, res) => {
+
+    var id = req.params.id;
+    var body = _.pick(req.body, ['name', 'completed']);
+    //  console.log("body.completed & body.text", body.completed, body.name, req.body);
+    if (ObjectID.isValid(id)) {
+        if (body.completed !== null && body.completed !== null) {
+
+            body.completedAt = new Date().getTime();
+
+        } else {
+            body.completed = false;
+            body.completedAt = null;
+            res.status(404).send("ID Doesn't match from patch")
+        }
+
+        Todo.findByIdAndUpdate(id, {
+            $set: body
+        }, {
+            new: true
+        }).then((result) => {
+            if (!result) {
+                console.log("Updation unsuccesfull", body);
+                return res.status(404).send("Updation unsuccess");
+            }
+            res.status(200).send("user is updated");
+            return console.log("Updation succesfull ::", body);
+        }).catch((e) => {
+            console.log("Updation unsuccesfull", e);
+            res.status(404).send("Updation unsuccesfull");
+        })
+    } else {
+        return res.status(404).send("Input Id is invalid!!");
+    }
+
+
+});
 app.listen(port, () => {
     console.log(`Server is set up at ${port}`);
 })
