@@ -1,4 +1,4 @@
-var config = require('./config/config')
+var config = require('./config/config');
 
 var express = require('express');
 var _ = require('lodash');
@@ -33,13 +33,14 @@ app.post('/todos', (req, res) => {
         completedAt: "2018"
     })
     var user = new User({
-        email: "mynkgpt.11@gmail.com"
+        name: "Mayank"
+        //email: "mynkgpt.11@gmail.com"
     })
 
     user.save().then((D) => {
         console.log("Saved Succesfully")
     }).catch((e) => {
-        console.log(" not saved");
+        console.log("User not saved because of validation");
 
     });
 
@@ -159,13 +160,13 @@ app.patch('/todos/:id', (req, res) => {
             new: true
         }).then((result) => {
             if (!result) {
-                console.log("Updation unsuccesfull", body);
+                console.log("Updation unsuccesfull", result);
                 return res.status(404).send("Updation unsuccess");
             }
             res.status(200).send("user is updated");
-            return console.log("Updation succesfull ::", body);
+            return console.log("Updation succesfull ::", result);
         }).catch((e) => {
-            console.log("Updation unsuccesfull", e);
+            console.log("Updation unsuccesfull from catch", e);
             res.status(404).send("Updation unsuccesfull");
         })
     } else {

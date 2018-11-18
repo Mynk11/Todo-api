@@ -21,7 +21,3 @@ mongoose.connect(myUri, options).then((e) => console.log("from sucees DB Connect
 module.exports = {
     mongoose
 }
-
-module.exports = {
-    mongoose
-}

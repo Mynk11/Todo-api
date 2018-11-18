@@ -3,7 +3,11 @@ var {
 } = require('../db/mongoose');
 var Schema = mongoose.Schema;
 var ModelSchema = new Schema({
-    email: String
+    email: {
+        type: String,
+        required: true
+
+    }
 });
 
 var User = mongoose.model('Users', ModelSchema);
