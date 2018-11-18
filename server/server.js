@@ -24,6 +24,49 @@ const {
 } = require('./db/mongoose');
 
 app.use(bodyParser.json());
+
+
+app.post('/users', (req, res) => {
+    console.log("req.body.email :", req.body.email);
+    var data = _.pick(req.body, ['email', 'password'])
+    /* var user = new User({
+        email: data.email,
+        password: data.password
+    }) */
+    var user = new User(data);
+    if (user.email && user.password) {
+        /*  user.save().then((D) => {
+             if (!D) {
+                 return res.status(404).send("Error not saved by users");
+             }
+             console.log("Saved Succesfully")
+             return res.status(200).send(D);
+
+         }).catch((e) => {
+             console.log("User not saved because of validation");
+             return res.status(404).send(e);
+         }); */
+        user.save().then((D) => {
+            console.log("Saved Succesfully")
+            return user.generateAuthToken()
+
+        }).then((token) => {
+            console.log('token process went fine from server');
+            res.status(200).header('x-auth', token).send(user);
+        }).catch((e) => {
+            console.log("User not saved because of validation", e);
+
+        });
+
+
+
+    } else {
+        return res.status(404).send("Error not saved");
+    }
+
+});
+
+
 app.post('/todos', (req, res) => {
     console.log("req.body.text :", req.body.text);
 
@@ -33,16 +76,14 @@ app.post('/todos', (req, res) => {
         completedAt: "2018"
     })
     var user = new User({
-        name: "Mayank"
-        //email: "mynkgpt.11@gmail.com"
+
+        email: "klt@ol.com",
+        password: "123erd"
     })
 
-    user.save().then((D) => {
-        console.log("Saved Succesfully")
-    }).catch((e) => {
-        console.log("User not saved because of validation");
+    //** User.findByToken//custom method on model level
+    //** user.generateAuthToken//method for individual instance 
 
-    });
 
     todo.save().then((D) => {
         res.status(200).send(JSON.stringify(D, undefined, 2));
