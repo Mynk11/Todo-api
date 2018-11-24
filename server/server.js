@@ -51,7 +51,7 @@ app.post('/users', (req, res) => {
             return user.generateAuthToken()
 
         }).then((token) => {
-            console.log('token process went fine from server');
+
             res.status(200).header('x-auth', token).send(user);
         }).catch((e) => {
             console.log("User not saved because of validation", e);
@@ -81,8 +81,8 @@ app.post('/todos', (req, res) => {
         password: "123erd"
     })
 
-    //** User.findByToken//custom method on model level
-    //** user.generateAuthToken//method for individual instance 
+    //** User.findByToken//custom method on model level to return to user
+    //** user.generateAuthToken//method for individual instance to generate token for individual user
 
 
     todo.save().then((D) => {

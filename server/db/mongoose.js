@@ -4,6 +4,7 @@
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 var myUri = process.env.MONGODB_URI;
+//console.log("process.env.MONGODB_URI", process.env.MONGODB_URI);
 var options = {
     useMongoClient: true,
     autoIndex: false, // Don't build indexes
@@ -14,7 +15,7 @@ var options = {
     bufferMaxEntries: 0
 };
 
-mongoose.connect(myUri, options).then((e) => console.log("from sucees DB Connected")).catch((e) => console.log("from error" + e));
+mongoose.connect(myUri, options).then((e) => console.log("from sucees DB Connected :", myUri)).catch((e) => console.log("from error" + e));
 
 
 

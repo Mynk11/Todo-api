@@ -1,5 +1,6 @@
 var validator = require('validator');
 const jwt = require('jsonwebtoken');
+const _ = require('lodash');
 var {
     mongoose
 } = require('../db/mongoose');
@@ -37,10 +38,18 @@ var ModelSchema = new Schema({
 
 });
 
+ModelSchema.methods.toJSON = function () {
+    var user = this;
+    var userObject = user.toObject(); //it convert the mongodo object into the user object
+
+    return _.pick(user, ['_id', 'email']);
+}
+
 ModelSchema.methods.generateAuthToken = function () {
     var user = this;
     var access = 'auth'
     var _id = this._id.toHexString();
+
     var token = jwt.sign({
         _id
     }, access).toString()
@@ -53,10 +62,10 @@ ModelSchema.methods.generateAuthToken = function () {
 
 
     return user.save().then((D) => {
-        console.log("token is created 1");
+
         return token;
     }).then((data) => {
-        console.log("Promising chaining successfull");
+
         return data;
     }).catch((e) => {
         console.log("User not saved because of validation from methods");
