@@ -2,8 +2,24 @@ const {
     SHA256
 } = require('crypto-js');
 
-
+var bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+var password = "K!12w3iu"
+bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(password, salt, (err, salt) => {
+        //console.log("Hashed password is ", salt);
+    })
+    var hashedPasswd = "$2a$10$DZhE.TetyBv3GOUTRDQ1ouyJ5Zp0gOG08nLvHcKDz7nWW6ai3VsdO";
+    bcrypt.compare(password, hashedPasswd, (err, data) => {
+        //it returns true/false
+        if (err) {
+            console.log("False");
+
+        } else {
+            console.log(data);
+        }
+    })
+});
 
 
 
@@ -21,10 +37,10 @@ var data = {
     id: 4
 }
 var encoded = jwt.sign(data, "Mayank").toString();
-console.log("Encoded value is:", encoded);
+//console.log("Encoded value is:", encoded);
 
 var decoded = jwt.verify(encoded, "Mayank");
-console.log("decode is :", decoded);
+//console.log("decode is :", decoded);
 
 
 // var token = {

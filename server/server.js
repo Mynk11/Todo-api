@@ -1,5 +1,5 @@
 var config = require('./config/config');
-
+var jwt = require('jsonwebtoken');
 var express = require('express');
 var _ = require('lodash');
 var bodyParser = require('body-parser');
@@ -8,7 +8,7 @@ const {
 } = require('mongodb');
 var app = express();
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 4000;
 
 
 const {
@@ -22,6 +22,13 @@ const {
 const {
     mongoose
 } = require('./db/mongoose');
+
+var {
+    authenticate
+} = require('./middelware/authenticate');
+var {
+    login
+} = require('./middelware/authenticate');
 
 app.use(bodyParser.json());
 
@@ -216,6 +223,52 @@ app.patch('/todos/:id', (req, res) => {
 
 
 });
+
+
+
+app.get('/users/me', authenticate, (req, res) => {
+    res.status(200).send(req.user);
+});
+
+
+app.post('/users/login', (req, res) => {
+
+    var body = _.pick(req.body, ['email', 'password']);
+    console.log("Requested credentials is ", body.email, body.password);
+
+    User.findByCredentials(body.email, body.password).then((data) => {
+        console.log("REturned data from credentials is ", data);
+
+
+        if (data === true) {
+            console.log("Login permitted", data);
+            res.status(200).send("Login succesfull");
+        } else {
+            res.status(400).send("Login unsuccesfull");
+            console.log("Error from users/login");
+        }
+
+
+
+    }).catch((e) => {
+        res.status(400).send("Login unsuccesfull");
+        console.log("Error from users/login");
+    })
+
+
+});
+app.delete('/users/me/token', authenticate, (req, res) => {
+    console.log("Req.token is ", req.token);
+    req.user.removeToken(req.token).then((data) => {
+        console.log("returned data from removetoken is", data);
+        res.status(200).send("Logout succesfull");
+    }).catch((e) => {
+        res.status(405).send("Logout unsuccesfull");
+        console.log("Error from users/logout");
+    })
+});
+
+
 app.listen(port, () => {
     console.log(`Server is set up at ${port}`);
 })
