@@ -86,7 +86,7 @@ ModelSchema.statics.findByToken = function (token) {
         return Promise.reject();
     };
 
-/* Just Added  to find a user*/
+
     return User.findOne({
         '_id': decoded._id,
         'tokens.token': token,
