@@ -23,3 +23,12 @@ if (env == "development" || env == "test") {
 // heroku config:get NAME=Mayank
 //heroku config:unset NAME
 //heroku config:set JWT_SECRET=ncvmnzcvnmvn
+/*   <!--MOngo DB Connection String-->  
+mongodb://todoapp:mayank11@ds159273.mlab.com:59273/todoapp
+*/
+/* format=mongodb://
+username=todoapp:
+password:mayank11
+address:ds159273.mlab.com
+portno:59273
+DB_name:todoapp */
