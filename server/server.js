@@ -74,18 +74,18 @@ app.post('/users', (req, res) => {
 });
 
 
-app.post('/todos', (req, res) => {
+app.post('/todos', authenticate, (req, res) => {
     console.log("req.body.text :", req.body.text);
 
     var todo = new Todo({
-        name: "mayank",
-        completed: "Acceltree",
-        completedAt: "2018"
+        text: req.body.text,
+        _creator: req.user._id
     })
     var user = new User({
 
         email: "klt@ol.com",
-        password: "123erd"
+        password: "123erd",
+
     })
 
     //** User.findByToken//custom method on model level to return to user
@@ -133,11 +133,12 @@ app.get('/', (req, res) => {
     })
 });
 
-app.get('/todos', (req, res) => {
+app.get('/todos', authenticate, (req, res) => {
 
     Todo.find().then((data) => {
         res.status(200).send({
-            data
+            _creator: req.user._id
+
         });
     }, (e) => {
         res.status(400).send(e);
@@ -146,12 +147,15 @@ app.get('/todos', (req, res) => {
     })
 });
 
-app.get('/todos/:id', (req, res) => {
+app.get('/todos/:id', authenticate, (req, res) => {
 
     var id = req.params.id;
     if (ObjectID.isValid(id)) {
         res.status(200);
-        Todo.findById(id).then((user) => {
+        Todo.findOne({
+            _id: id,
+            _creator: req.user._id
+        }).then((user) => {
             if (!user) {
                 return res.status(404).send("ID Doesn't match")
             }
@@ -165,13 +169,16 @@ app.get('/todos/:id', (req, res) => {
 
 
 });
-app.delete('/todos/:id', (req, res) => {
+app.delete('/todos/:id', authenticate, (req, res) => {
 
     var id = req.params.id;
     console.log("Deleted is called on id: from delete", id);
-    if (ObjectID.isValid(id)) {
+    if (ObjectID.isValid({
+            _id: id,
+            _creator: req.user._id
+        })) {
 
-        Todo.findByIdAndRemove(id).then((user) => {
+        Todo.findByOneAndRemove(id).then((user) => {
             if (!user) {
                 res.status(404).send("ID Doesn't match")
             } else {
@@ -186,7 +193,7 @@ app.delete('/todos/:id', (req, res) => {
 
 
 });
-app.patch('/todos/:id', (req, res) => {
+app.patch('/todos/:id', authenticate, (req, res) => {
 
     var id = req.params.id;
     var body = _.pick(req.body, ['name', 'completed']);
@@ -202,7 +209,10 @@ app.patch('/todos/:id', (req, res) => {
             res.status(404).send("ID Doesn't match from patch")
         }
 
-        Todo.findByIdAndUpdate(id, {
+        Todo.findByOneAndUpdate({
+            _id: id,
+            _creator: req.user._id
+        }, {
             $set: body
         }, {
             new: true

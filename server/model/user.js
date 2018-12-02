@@ -54,7 +54,7 @@ ModelSchema.methods.generateAuthToken = function () {
     var token = jwt.sign({
         _id,
         access
-    }, 'abc123').toString()
+    }, process.env.jwt_verify || 'abc123').toString()
 
 
     user.tokens = user.tokens.concat([{
@@ -78,7 +78,7 @@ ModelSchema.statics.findByToken = function (token) {
 
     try {
         console.log("TOken is :", token)
-        var decoded = jwt.verify(token, 'abc123');
+        var decoded = jwt.verify(token, process.env.jwt_verify || 'abc123');
 
 
     } catch (e) {

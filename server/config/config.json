@@ -1,5 +1,17 @@
 {
     "schema": 1,
     "install": "0a4a1a22-e11a-49b4-9f28-cdb62d8c7713",
-    "skipAnalytics": false
+    "skipAnalytics": false,
+    "test": {
+        "PORT": 3000,
+        "MONGODB_URI": "mongodb://localhost:27017/TodoAppTest",
+        "jwt_verify ": "abc123"
+    },
+    "development": {
+        "PORT": 3000,
+        "MONGODB_URI": "mongodb://localhost:27017/TodoApp",
+        "jwt_verify ": "abc123"
+    }
+
+
 }
