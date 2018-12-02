@@ -173,12 +173,15 @@ app.delete('/todos/:id', authenticate, (req, res) => {
 
     var id = req.params.id;
     console.log("Deleted is called on id: from delete", id);
-    if (ObjectID.isValid({
+    if (ObjectID.isValid(
+            id
+
+        )) {
+
+        Todo.findOneAndRemove({
             _id: id,
             _creator: req.user._id
-        })) {
-
-        Todo.findByOneAndRemove(id).then((user) => {
+        }).then((user) => {
             if (!user) {
                 res.status(404).send("ID Doesn't match")
             } else {

@@ -32,3 +32,4 @@ password:mayank11
 address:ds159273.mlab.com
 portno:59273
 DB_name:todoapp */
+//heroku restart
